@@ -4,29 +4,29 @@ import localResolve from 'rollup-plugin-local-resolve';
 import * as pkg from './package.json';
 
 export default {
-  input: pkg.module,
-  output: {
-    file: pkg.main,
-    format: 'cjs'
-  },
-  name: 'fit',
-  external: [
-    'fs',
-    'path',
-    'process'
-  ],
-  plugins: [
-    nodeResolve ({
-      jsnext: true,
-      module: true,
-      main: true,
-      preferBuiltins: true
-    }),
-    localResolve(),
-    commonjs ({
-      include: 'node_modules/**',
-      ignoreGlobal: false,
-      sourceMap: false
-    })
-  ]
+	input: pkg.module,
+	output: {
+		file: pkg.main,
+		format: 'cjs'
+	},
+	name: pkg.name,
+	plugins: [
+		nodeResolve ({
+			jsnext: true,
+			module: true,
+			main: true,
+			preferBuiltins: true
+		}),
+		localResolve(),
+		commonjs ({
+			include: 'node_modules/**',
+			ignoreGlobal: false,
+			sourceMap: false,
+			ignore: [
+				'fs',
+				'path',
+				'process'
+			]
+		})
+	]
 };
