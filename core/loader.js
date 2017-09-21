@@ -10,7 +10,7 @@ function local (module_name, opts) {
 		relative : args.emulateLocal() ?
 			utils.moduleResolve (local) ?
 				local : relative : relative;
-};
+}
 
 export default function () {
 	let use = config.use();
@@ -36,7 +36,7 @@ export default function () {
 	}
 
 	return Promise.resolve();
-};
+}
 
 
 export { local as local };
