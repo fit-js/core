@@ -25,7 +25,7 @@ export default function () {
 				console.log (' Loaded '.green.bold.inverse);
 			}
 			catch (e) {
-				console.log (' Failed: '.red.bold.inverse +':', e.code ? e.code.red : e);
+				console.log (' Failed '.red.bold.inverse +':', e.code ? e.code.red : e);
 			}
 
 		});
