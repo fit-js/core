@@ -1,66 +1,50 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { args, utils } from './';
+import path from 'path';
+import { env } from './args';
+import { json, exit } from './utils';
 
-export default class Config {
-	constructor () {
-		this.use = [];
-	}
+let pkg = json (path.join (process.cwd(), 'package.json'));
+let use = [];
 
-	confirmDeps () {
-		let bundles = this.pkg.bundles;
+function confirmDeps () {
+	let bundles = pkg.bundles;
 
+	bundles.forEach ( (item) => {
+		let tool = pkg.dependencies[item.package] !== undefined;
+
+		if (tool) {
+			use.push(item);
+		}
+	});
+
+	return;
+}
+
+function confirmDevDeps () {
+	let bundles = pkg.bundles;
+
+	if (pkg.devDependencies) {
 		bundles.forEach ( (item) => {
-			let tool = this.pkg.dependencies[item.package] !== undefined;
-
+			let tool = pkg.devDependencies[item.package] !== undefined;
 
 			if (tool) {
-				this.use.push(item);
+				use.push(item);
 			}
 		});
 
 		return;
-	};
-
-	confirmDevDeps () {
-		let bundles = this.pkg.bundles;
-
-		if (this.pkg.devDependencies) {
-			bundles.forEach ( (item) => {
-				let tool = this.pkg.devDependencies[item.package] !== undefined;
-
-				if (tool) {
-					this.use.push(item);
-				}
-			});
-
-			return;
-		}
-	};
-
-	bundles () {
-		return this.use;
 	}
 }
-
-let config = new Config();
 
 export function init () {
-
-	config.pkg = utils.json (path.join (process.cwd(), 'package.json'));
-
-	if (config.pkg) {
-		if ( args.env() === 'develop' ) {
-			config.confirmDevDeps();
-		}
-		config.confirmDeps();
+	if (pkg && pkg.bundles) {
+		if (env() === 'develop') confirmDevDeps();
+		confirmDeps();
+		return Promise.resolve();
 	} else {
-		utils.exit('Exiting..');
+		return Promise.reject('Configure maybe..?');
 	}
-
-	return Promise.resolve();
 }
 
-export function use () {
-	return config.bundles();
+export default function () {
+	return use;
 }

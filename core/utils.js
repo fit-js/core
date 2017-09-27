@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as process from 'process';
+import fs from 'fs';
+import path from 'path';
+import process from 'process';
 
 export function json (file) {
 	let output;
@@ -11,17 +11,17 @@ export function json (file) {
 		output = JSON.parse (fs.readFileSync (file));
 	}
 	catch (e) {
-		console.log (file.gray + ' ' + (' '+ e +' ').error.inverse);
+		console.log('\x1b[31m', '!', e, '\x1b[0m');
 		return false;
 	}
 
 	return output;
-};
+}
 
 // Plugin display error
 export function error (type, original) {
-	console.log('!'.yellow.inverse +' '+ (type +': '+ original).yellow.bold);
-};
+	console.log('\x1b[31m !\x1b[0m\x1b[2m', type+':', original, '\x1b[0m');
+}
 
 // Plugin does file exist
 export function exists (filename) {
@@ -34,17 +34,17 @@ export function exists (filename) {
 			return true;
 		}
 		else {
-			console.log ('', ' missing '.red.inverse, short_filename.gray);
+			error ('missing', short_filename);
 			return false;
 		}
 	}
-};
+}
 
 // hard exit
 export function exit (msg) {
 	if (msg) console.log(msg);
 	process.exit(0);
-};
+}
 
 export function filterNonExistingFiles (source, cwd = process.cwd()) {
 	cwd = cwd || process.cwd();
@@ -61,7 +61,7 @@ export function filterNonExistingFiles (source, cwd = process.cwd()) {
 	}
 
 	return undefined;
-};
+}
 
 export function moduleResolve (where) {
 	try {
@@ -72,4 +72,4 @@ export function moduleResolve (where) {
 	}
 
 	return true;
-};
+}
