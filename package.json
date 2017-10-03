@@ -1,7 +1,7 @@
 {
   "name": "fit-core",
   "description": "FIT is FrontEnd-Implementer-Tools and is tiny layer over other tools for running development/deployment tasks with ease and minimal config.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "rollup-plugin-commonjs": "^8.2.1",
     "rollup-plugin-local-resolve": "^1.0.7",
