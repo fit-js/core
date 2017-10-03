@@ -1,4 +1,4 @@
-import * as process from 'process';
+import process from 'process';
 let local, environment;
 
 function isArg (arg) {
@@ -6,7 +6,7 @@ function isArg (arg) {
 }
 
 local = isArg ('-l');
-environment = isArg ('--deploy') ? 'production' : 'develop';
+environment = isArg ('-b') || isArg ('--deploy') ? 'production' : 'develop';
 
 export function emulateLocal () {
 	return local;
